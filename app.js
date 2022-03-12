@@ -3,6 +3,7 @@ const express = require('express');
 const hbs = require('hbs');
 const path = require('path');
 const PunkAPIWrapper = require('punkapi-javascript-wrapper');
+const { getEnabledCategories } = require('trace_events');
 
 const app = express();
 const punkAPI = new PunkAPIWrapper();
@@ -22,4 +23,26 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/beers', (req, res) => {
+  punkAPI
+  .getBeers()
+    .then(beersFromApi => {
+      res.render('beers', { beers: beersFromApi })
+    })
+  .catch(error => console.log(error));
+});
+
 app.listen(3000, () => console.log('🏃‍ on port 3000'));
+
+
+// getBeers = () => { 
+//   return new Promise((resolve, reject) => {
+//     // Go out across internet and get beers
+//     // After successfull completionm....
+//     resolve(theBeers);
+
+//     // If some shit went wrong
+//     reject(errorMsg);
+
+//   });
+// }
